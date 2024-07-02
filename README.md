@@ -1,5 +1,5 @@
 ## Dining Reservation System
-# Run Regsiter User Code
+# Run Register User Code
 ```
 cd api_server
 npm install
