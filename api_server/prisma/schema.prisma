@@ -13,10 +13,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  LOGIN_USER
+}
+
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   String?
-  profile String?
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  password     String
+  name         String?
+  role         Role          @default(LOGIN_USER)
+  reservations Reservation[]
+}
+
+model Dining {
+  id             Int           @id @default(autoincrement())
+  restaurantName String
+  location       String
+  menu           String
+  cuisines       String
+  reservations   Reservation[]
+}
+
+model Reservation {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  dining    Dining   @relation(fields: [diningId], references: [id])
+  diningId  Int
+  startTime DateTime
+  endTime   DateTime
+
+  @@unique([diningId, startTime, endTime])
 }
